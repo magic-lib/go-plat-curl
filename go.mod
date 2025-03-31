@@ -1,4 +1,4 @@
-module github.com/tianlin0/go-plat-curl
+module github.com/magic-lib/go-plat-curl
 
 go 1.23.2
 
@@ -7,7 +7,6 @@ require (
 	github.com/avast/retry-go/v4 v4.6.0
 	github.com/json-iterator/go v1.1.12
 	github.com/samber/lo v1.49.1
-	github.com/tianlin0/go-plat-utils v0.0.0-20250219033730-6c76daace332
 )
 
 require (

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/tianlin0/go-plat-utils/logs"
+	"github.com/magic-lib/go-plat-utils/logs"
 	"net/http"
 )
 

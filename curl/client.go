@@ -2,9 +2,9 @@ package curl
 
 import (
 	"context"
-	"github.com/tianlin0/go-plat-utils/cache"
-	"github.com/tianlin0/go-plat-utils/conf"
-	"github.com/tianlin0/go-plat-utils/logs"
+	"github.com/magic-lib/go-plat-utils/cache"
+	"github.com/magic-lib/go-plat-utils/conf"
+	"github.com/magic-lib/go-plat-utils/logs"
 	"net/http"
 )
 
