@@ -3,9 +3,9 @@ package curl_test
 import (
 	"context"
 	"fmt"
-	"github.com/tianlin0/go-plat-curl/curl"
-	"github.com/tianlin0/go-plat-utils/conf"
-	"github.com/tianlin0/go-plat-utils/goroutines"
+	"github.com/magic-lib/go-plat-curl/curl"
+	"github.com/magic-lib/go-plat-utils/conf"
+	"github.com/magic-lib/go-plat-utils/goroutines"
 	"net/http"
 	"testing"
 	"time"

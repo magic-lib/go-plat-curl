@@ -3,9 +3,9 @@ package curl
 import (
 	"context"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/tianlin0/go-plat-utils/cache"
-	"github.com/tianlin0/go-plat-utils/conv"
-	"github.com/tianlin0/go-plat-utils/goroutines"
+	"github.com/magic-lib/go-plat-cache/cache"
+	"github.com/magic-lib/go-plat-utils/conv"
+	"github.com/magic-lib/go-plat-utils/goroutines"
 	"time"
 )
 

@@ -2,7 +2,7 @@ package curl
 
 import (
 	"errors"
-	"github.com/tianlin0/go-plat-utils/conv"
+	"github.com/magic-lib/go-plat-utils/conv"
 	"io"
 	"net/http"
 	"time"
