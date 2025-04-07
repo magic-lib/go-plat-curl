@@ -6,8 +6,8 @@ require (
 	github.com/ChengjinWu/gojson v0.0.0-20181113073026-04749cc2d015
 	github.com/avast/retry-go/v4 v4.6.0
 	github.com/json-iterator/go v1.1.12
-	github.com/magic-lib/go-plat-cache v1.20250404.3
-	github.com/magic-lib/go-plat-utils v1.20250404.2
+	github.com/magic-lib/go-plat-cache v1.20250407.1
+	github.com/magic-lib/go-plat-utils v1.20250407.1
 	github.com/samber/lo v1.49.1
 	github.com/tidwall/gjson v1.18.0
 	github.com/tidwall/sjson v1.2.5
@@ -31,20 +31,22 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
+	github.com/hashicorp/errwrap v1.1.0 // indirect
+	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/iancoleman/orderedmap v0.3.0 // indirect
 	github.com/jimstudt/http-authentication v0.0.0-20140401203705-3eca13d6893a // indirect
 	github.com/jinzhu/copier v0.4.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/lqiz/expr v1.1.4 // indirect
-	github.com/magic-lib/go-plat-startupcfg v1.20250403.3 // indirect
+	github.com/magic-lib/go-plat-startupcfg v1.20250405.1 // indirect
 	github.com/marspere/goencrypt v1.0.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect
-	github.com/orcaman/concurrent-map v1.0.0 // indirect
+	github.com/orcaman/concurrent-map/v2 v2.0.1 // indirect
 	github.com/panjf2000/ants/v2 v2.11.2 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
