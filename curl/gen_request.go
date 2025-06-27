@@ -1,6 +1,7 @@
 package curl
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -25,6 +26,8 @@ type genRequest struct {
 
 	checkCacheFunc func(resp *Response) bool //检查是否需要缓存
 	cacheTime      time.Duration             //缓存过期时间
+
+	hasFile bool
 }
 
 func (g *genRequest) getNewRequest() *Request {
@@ -37,11 +40,26 @@ func (g *genRequest) getNewRequest() *Request {
 }
 
 func (g *genRequest) Submit(ctx context.Context) *Response {
+	//如果包含有文件上传，则不能进行缓存
+	hasFile, fileBody, fileHeader, err := g.getFileBody()
+	if hasFile {
+		g.hasFile = true
+		g.cacheTime = 0 //上传文件不能缓存，数据太大了
+		if g.Header == nil {
+			g.Header = http.Header{}
+		}
+		for key, val := range fileHeader {
+			g.Header.Set(key, val[0])
+		}
+	}
 	g.buildGenRequest()
-
 	resp := newResponse(g.getNewRequest())
+	if err != nil {
+		resp.Error = err
+		return resp
+	}
 
-	err := g.checkParam()
+	err = g.checkParam()
 	if err != nil {
 		resp.Error = err
 		return resp
@@ -66,14 +84,23 @@ func (g *genRequest) Submit(ctx context.Context) *Response {
 		}
 	}
 
-	dataString, _ := getDataString(g.Data)
+	dataString, _ := getDataString(hasFile, g.Data)
 
-	postUrl := getNewUrl(g.Url, g.Method, dataString)
+	newUrl := getNewUrl(g.Url, g.Method, dataString)
 
-	logStr := fmt.Sprintf("[comm-request request] url:%s", postUrl)
+	logStr := fmt.Sprintf("[comm-request request] url:%s", newUrl)
 	printLog(ctx, g.cli.logger, 0, g.defaultPrintLogInt, logStr)
 
-	allResp := g.httpRequest(ctx, dataString, resp)
+	var dataBuffer *bytes.Buffer
+	if hasFile {
+		if fileBody != nil {
+			dataBuffer = fileBody
+		}
+	} else {
+		dataBuffer = bytes.NewBufferString(dataString)
+	}
+
+	allResp := g.httpRequest(ctx, newUrl, dataBuffer, resp)
 
 	//返回结果的日志
 	printLoggerResponse(ctx, g.cli.logger, g.defaultPrintLogInt, allResp)

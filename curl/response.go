@@ -2,6 +2,7 @@ package curl
 
 import (
 	"errors"
+	"fmt"
 	"github.com/magic-lib/go-plat-utils/conv"
 	"io"
 	"net/http"
@@ -45,21 +46,39 @@ func (r *Response) setAndCloseHttpResp(resp *http.Response) {
 	}
 }
 
+// HttpBody 返回http响应内容
+func (r *Response) HttpBody() []byte {
+	if r.body != nil {
+		return r.body
+	}
+	return nil
+}
+
 func (r *Response) setRespContent(resp *http.Response) ([]byte, error) {
 	if resp == nil {
 		return nil, errors.New("response is nil")
 	}
 
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			fmt.Println("curl setRespContent close error:", err)
+		}
+	}(resp.Body)
 	if r.resp != nil {
-		defer r.resp.Body.Close()
+		defer func(Body io.ReadCloser) {
+			err := Body.Close()
+			if err != nil {
+				fmt.Println("curl setRespContent close error:", err)
+			}
+		}(r.resp.Body)
 	}
 
 	if len(r.body) > 0 {
 		return r.body, nil
 	}
 
-	if resp == nil || resp.Body == nil {
+	if resp.Body == nil {
 		return nil, errors.New("response or body is nil")
 	}
 

@@ -6,8 +6,8 @@ require (
 	github.com/ChengjinWu/gojson v0.0.0-20181113073026-04749cc2d015
 	github.com/avast/retry-go/v4 v4.6.0
 	github.com/json-iterator/go v1.1.12
-	github.com/magic-lib/go-plat-cache v1.20250407.1
-	github.com/magic-lib/go-plat-utils v1.20250407.1
+	github.com/magic-lib/go-plat-cache v1.20250416.5
+	github.com/magic-lib/go-plat-utils v1.20250627.1
 	github.com/samber/lo v1.49.1
 	github.com/tidwall/gjson v1.18.0
 	github.com/tidwall/sjson v1.2.5
@@ -25,6 +25,7 @@ require (
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/forgoer/openssl v1.6.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
+	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.26.0 // indirect
@@ -50,6 +51,7 @@ require (
 	github.com/panjf2000/ants/v2 v2.11.2 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rs/xid v1.6.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
@@ -59,7 +61,11 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/timandy/routine v1.1.5 // indirect
+	github.com/viant/toolbox v0.37.0 // indirect
+	github.com/viant/xreflect v0.0.0-20230303201326-f50afb0feb0d // indirect
+	github.com/viant/xunsafe v0.10.3 // indirect
 	github.com/zeromicro/go-zero v1.8.1 // indirect
+	go.uber.org/automaxprocs v1.6.0 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect

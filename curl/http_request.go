@@ -46,17 +46,13 @@ func (g *genRequest) buildHttpRequest(req *http.Request) *http.Request {
 	return req
 }
 
-func (g *genRequest) getHttpRequest(ctx context.Context, dataString string) (*http.Request, error) {
-	newUrl := getNewUrl(g.Url, g.Method, dataString)
-
-	httpReq, err := http.NewRequest(g.Method, newUrl, bytes.NewBufferString(dataString))
+func (g *genRequest) getHttpRequest(ctx context.Context, newUrl string, dataBuffer *bytes.Buffer) (*http.Request, error) {
+	httpReq, err := http.NewRequest(g.Method, newUrl, dataBuffer)
 	if err != nil {
 		logStr := fmt.Sprintf("[comm-request request] url:%s, error: %s", newUrl, err.Error())
 		printLog(ctx, g.cli.logger, logs.ERROR, g.defaultPrintLogInt, logStr)
 		return nil, err
 	}
-
 	httpReq = g.buildHttpRequest(httpReq)
-
 	return httpReq, nil
 }

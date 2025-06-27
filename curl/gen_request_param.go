@@ -34,27 +34,28 @@ func (g *genRequest) buildGenRequest() {
 	}
 
 	g.Url = strings.TrimSpace(g.Url)
-	g.Header = getHeaders(g.Header, g.Method, g.Data)
+	g.Header = getHeaders(g.Header, g.Method, g.hasFile, g.Data)
 
 	if g.cli.handler == nil {
 		g.cli.handler = defaultHandler
 	}
 }
 
-// buildGenRequest 优化一下参数
+// checkParam 优化一下参数
 func (g *genRequest) checkParam() error {
-	_, err := getDataString(g.Data)
-	if err != nil {
-		return err
-	}
 
 	if g.Url == "" {
 		return fmt.Errorf("url请求地址为空")
 	}
 
-	_, err = url.Parse(g.Url)
+	_, err := url.Parse(g.Url)
 	if err != nil {
 		return fmt.Errorf("url格式错误：%s, %v", g.Url, err)
+	}
+
+	_, err = getDataString(g.hasFile, g.Data)
+	if err != nil {
+		return err
 	}
 	return nil
 }

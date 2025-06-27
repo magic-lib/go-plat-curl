@@ -1,6 +1,7 @@
 package curl
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/avast/retry-go/v4"
@@ -8,8 +9,8 @@ import (
 )
 
 // 递归使用
-func (g *genRequest) httpRequest(ctx context.Context, dataString string, resp *Response) *Response {
-	httpReq, err := g.getHttpRequest(ctx, dataString)
+func (g *genRequest) httpRequest(ctx context.Context, newUrl string, dataBuffer *bytes.Buffer, resp *Response) *Response {
+	httpReq, err := g.getHttpRequest(ctx, newUrl, dataBuffer)
 	if err != nil {
 		resp.Error = err
 		return resp

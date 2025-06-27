@@ -6,8 +6,8 @@ import (
 	"github.com/ChengjinWu/gojson"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/magic-lib/go-plat-utils/conv"
-	"github.com/magic-lib/go-plat-utils/logs"
 	"github.com/magic-lib/go-plat-utils/id-generator/id"
+	"github.com/magic-lib/go-plat-utils/logs"
 	"github.com/magic-lib/go-plat-utils/utils/httputil/param"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -35,52 +35,72 @@ func getMethod(method string) string {
 	return defaultMethod
 }
 
-func getHeaders(headers http.Header, method string, data interface{}) http.Header {
+func getHeaders(headers http.Header, method string, hasFile bool, data interface{}) http.Header {
 	if headers == nil {
 		headers = http.Header{}
 	}
 
-	ct := headers.Get(headerContentType)
-	if ct == "" {
-		isSetType := false
-		dataString, err := getDataString(data)
-		if err == nil {
-			if method == http.MethodGet {
-				isSetType = true
-				headers.Set(headerContentType, headerContentTypeFormUrlencoded)
-			}
-		}
-		if !isSetType {
-			if dataString != "" {
-				checkJsonError := gojson.CheckValid([]byte(dataString))
-				if checkJsonError == nil {
-					//表示数据是json格式
-					headers.Set(headerContentType, headerContentTypeJsonUtf8)
-				}
-			}
-		}
-	} else {
-		//如果data数据是json，并且不是get的话，则不能是 x-www-form-urlencoded
-		if method != http.MethodGet {
-			if strings.Contains(ct, headerContentTypeFormUrlencodedKey) {
-				dataString, err := getDataString(data)
-				if err == nil {
-					checkJsonError := gojson.CheckValid([]byte(dataString))
-					if checkJsonError == nil {
-						//表示数据是json格式
-						headers.Set(headerContentType, headerContentTypeJsonUtf8)
-					}
-				}
-			}
-		}
+	contentTypeString := headerSetContentType(headers, method, hasFile, data)
+	if contentTypeString != "" {
+		headers.Set(headerContentType, contentTypeString)
 	}
 
 	headers = beautifulHeader(headers)
 
 	return headers
 }
+func headerSetContentType(headers http.Header, method string, hasFile bool, data interface{}) string {
+	if headers == nil {
+		headers = http.Header{}
+	}
 
-func getDataString(data interface{}) (string, error) {
+	ct := headers.Get(headerContentType)
+	if ct == "" {
+		dataString, err := getDataString(hasFile, data)
+		if err == nil {
+			if method == http.MethodGet {
+				return headerContentTypeFormUrlencoded
+			}
+		}
+
+		if dataString != "" {
+			checkJsonError := gojson.CheckValid([]byte(dataString))
+			if checkJsonError == nil {
+				//表示数据是json格式
+				return headerContentTypeJsonUtf8
+			}
+		}
+	} else {
+		//如果data数据是json，并且不是get的话，则不能是 x-www-form-urlencoded
+		if method != http.MethodGet {
+			if strings.Contains(ct, headerContentTypeFormUrlencodedKey) {
+				dataString, err := getDataString(hasFile, data)
+				if err == nil {
+					checkJsonError := gojson.CheckValid([]byte(dataString))
+					if checkJsonError == nil {
+						//表示数据是json格式
+						return headerContentTypeJsonUtf8
+					}
+				}
+			}
+		}
+	}
+	return ""
+}
+
+func getDataString(hasFile bool, data interface{}) (string, error) {
+	if data == nil {
+		return "", nil
+	}
+	if hasFile {
+		return "", nil
+	}
+
+	hasFile = hasFileData(data)
+	if hasFile {
+		return "", nil
+	}
+
 	var paramDataStr string
 	typeData := fmt.Sprintf("%T", data)
 	if typeData != "string" {
@@ -164,19 +184,19 @@ func getNewUrl(url, method string, dataString string) string {
 	}
 
 	err := gojson.CheckValid([]byte(dataString))
-	param := dataString
+	paramTemp := dataString
 	if err == nil {
 		param2 := make(map[string]interface{})
 		err3 := jsoniter.Unmarshal([]byte(dataString), &param2)
 		if err3 == nil {
-			param = createParamStrOrder(param2)
+			paramTemp = createParamStrOrder(param2)
 		}
 	}
 	newUrl := ""
 	if strings.Index(url, "?") > 0 {
-		newUrl = url + "&" + param
+		newUrl = url + "&" + paramTemp
 	} else {
-		newUrl = url + "?" + param
+		newUrl = url + "?" + paramTemp
 	}
 	return newUrl
 }
@@ -280,7 +300,7 @@ func isNil(i interface{}) bool {
 func getRequestId(p *Request) string {
 	paramDataOnlyStr := ""
 	{
-		paramDataStr, err := getDataString(p.Data)
+		paramDataStr, err := getDataString(false, p.Data)
 		if err == nil {
 			paramDataOnlyStr = getJsonOnlyKey(paramDataStr)
 		}
