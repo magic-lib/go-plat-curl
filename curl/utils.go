@@ -205,7 +205,7 @@ func getNewUrl(url, method string, dataString string) string {
 func createParamStrOrder(params map[string]interface{}) string {
 	aParams := make([]string, 0)
 	for k, v := range params {
-		val := fmt.Sprintf("%v", v)
+		val := conv.String(v)
 		aParams = append(aParams, k+"="+url.QueryEscape(val))
 	}
 	sort.Strings(aParams)
