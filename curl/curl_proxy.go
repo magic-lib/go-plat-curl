@@ -1,18 +1,17 @@
-package curlproxy
+package curl
 
 import (
 	"context"
 	"fmt"
-	"github.com/magic-lib/go-plat-curl/curl"
 	"github.com/magic-lib/go-plat-startupcfg/startupcfg"
 	"github.com/magic-lib/go-plat-utils/conv"
 	"net/http"
 )
 
-// CurlProxy 利用config，封装了curl的提交方法
-type CurlProxy interface {
-	ServerApi() startupcfg.ServiceAPI                                                                        //获取服务api配置
-	Submit(ctx context.Context, urlName string, curlReq *curl.Request, dstPoint any) (*curl.Response, error) //提交数据
+// Proxy 利用config，封装了curl的提交方法
+type Proxy interface {
+	ServerApi() startupcfg.ServiceAPI                                                                 //获取服务api配置
+	Submit(ctx context.Context, urlCfgName string, curlReq *Request, dstPoint any) (*Response, error) //提交数据
 }
 
 type Config struct {
@@ -24,7 +23,7 @@ type curlProxy struct {
 	serverApi startupcfg.ServiceAPI
 }
 
-func NewCurlProxy(cfg *Config) (CurlProxy, error) {
+func NewCurlProxy(cfg *Config) (Proxy, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("cfg is nil")
 	}
@@ -48,14 +47,14 @@ func (l *curlProxy) ServerApi() startupcfg.ServiceAPI {
 	return l.serverApi
 }
 
-func (l *curlProxy) Submit(ctx context.Context, urlName string, curlReq *curl.Request, dstPoint any) (*curl.Response, error) {
+func (l *curlProxy) Submit(ctx context.Context, urlCfgName string, curlReq *Request, dstPoint any) (*Response, error) {
 	if curlReq == nil {
-		curlReq = new(curl.Request)
+		curlReq = new(Request)
 	}
 	if curlReq.Url == "" {
-		curlReq.Url = fmt.Sprintf("%s%s", l.serverApi.DomainName(), l.serverApi.Url(urlName))
+		curlReq.Url = fmt.Sprintf("%s%s", l.serverApi.DomainName(), l.serverApi.Url(urlCfgName))
 	}
-	resp := curl.NewClient().NewRequest(curlReq).Submit(ctx)
+	resp := NewClient().NewRequest(curlReq).Submit(ctx)
 	if resp.Error != nil {
 		return resp, resp.Error
 	}
