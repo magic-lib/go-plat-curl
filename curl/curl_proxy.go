@@ -14,7 +14,7 @@ type Proxy interface {
 	Submit(ctx context.Context, urlCfgName string, curlReq *Request, dstPoint any) (*Response, error) //提交数据
 }
 
-type Config struct {
+type ProxyConfig struct {
 	ServiceConfig *startupcfg.ConfigAPI
 	ServiceName   string
 }
@@ -23,7 +23,7 @@ type curlProxy struct {
 	serverApi startupcfg.ServiceAPI
 }
 
-func NewCurlProxy(cfg *Config) (Proxy, error) {
+func NewCurlProxy(cfg *ProxyConfig) (Proxy, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("cfg is nil")
 	}
