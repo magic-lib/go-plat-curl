@@ -11,7 +11,7 @@ import (
 type genRequest struct {
 	Request
 
-	Timeout time.Duration `json:"timeout,omitempty"`
+	timeout time.Duration
 
 	cookies  []*http.Cookie
 	username string

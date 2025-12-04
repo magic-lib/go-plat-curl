@@ -92,7 +92,7 @@ func (g *genRequest) SetBasicAuth(username, password string) RequestBuilder {
 
 // SetTimeout d
 func (g *genRequest) SetTimeout(d time.Duration) RequestBuilder {
-	g.Timeout = d
+	g.timeout = d
 	return g
 }
 

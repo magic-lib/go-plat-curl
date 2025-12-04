@@ -23,8 +23,8 @@ func (g *genRequest) buildGenRequest() {
 	}
 	g.Method = getMethod(g.Method)
 
-	if g.Timeout <= 0 {
-		g.Timeout = defaultTimeoutSecond
+	if g.timeout <= 0 {
+		g.timeout = defaultTimeoutSecond
 	}
 
 	if g.cacheTime > 0 {
