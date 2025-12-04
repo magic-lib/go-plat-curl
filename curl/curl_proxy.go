@@ -10,13 +10,18 @@ import (
 
 // Proxy 利用config，封装了curl的提交方法
 type Proxy interface {
-	ServerApi() startupcfg.ServiceAPI                                                                 //获取服务api配置
-	Submit(ctx context.Context, urlCfgName string, curlReq *Request, dstPoint any) (*Response, error) //提交数据
+	ServerApi() startupcfg.ServiceAPI                                                  //获取服务api配置
+	Submit(ctx context.Context, proxyData *ProxyData, dstPoint any) (*Response, error) //提交数据
 }
 
 type ProxyConfig struct {
 	ServiceConfig *startupcfg.ConfigAPI
 	ServiceName   string
+}
+type ProxyData struct {
+	UrlCfgName      string                                 //url配置名称
+	CurlReq         *Request                               //curl请求参数,GET\POST
+	BuildReqHandler func(rb RequestBuilder) RequestBuilder //构建请求的函数，比如设置缓存时间
 }
 
 type curlProxy struct {
@@ -47,14 +52,21 @@ func (l *curlProxy) ServerApi() startupcfg.ServiceAPI {
 	return l.serverApi
 }
 
-func (l *curlProxy) Submit(ctx context.Context, urlCfgName string, curlReq *Request, dstPoint any) (*Response, error) {
-	if curlReq == nil {
-		curlReq = new(Request)
+func (l *curlProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint any) (*Response, error) {
+	if proxyData == nil {
+		return nil, fmt.Errorf("proxyData is nil")
 	}
-	if curlReq.Url == "" {
-		curlReq.Url = fmt.Sprintf("%s%s", l.serverApi.DomainName(), l.serverApi.Url(urlCfgName))
+	if proxyData.CurlReq == nil {
+		proxyData.CurlReq = new(Request)
 	}
-	resp := NewClient().NewRequest(curlReq).Submit(ctx)
+	if proxyData.CurlReq.Url == "" {
+		proxyData.CurlReq.Url = fmt.Sprintf("%s%s", l.serverApi.DomainName(), l.serverApi.Url(proxyData.UrlCfgName))
+	}
+	var rb RequestBuilder = NewClient().NewRequest(proxyData.CurlReq)
+	if proxyData.BuildReqHandler != nil {
+		rb = proxyData.BuildReqHandler(rb)
+	}
+	resp := rb.Submit(ctx)
 	if resp.Error != nil {
 		return resp, resp.Error
 	}
