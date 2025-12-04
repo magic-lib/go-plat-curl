@@ -6,8 +6,9 @@ require (
 	github.com/ChengjinWu/gojson v0.0.0-20181113073026-04749cc2d015
 	github.com/avast/retry-go/v4 v4.6.0
 	github.com/json-iterator/go v1.1.12
-	github.com/magic-lib/go-plat-cache v1.20250722.3-0.20250910070500-8f73701ad481
-	github.com/magic-lib/go-plat-utils v1.20250721.3-0.20251013114245-db1f9ebabd56
+	github.com/magic-lib/go-plat-cache v1.20250722.3-0.20251031010231-e8ddd0bcd4a7
+	github.com/magic-lib/go-plat-startupcfg v1.20250529.2-0.20251107071310-a21e06637437
+	github.com/magic-lib/go-plat-utils v1.20251105.2-0.20251203074654-e1c95f5c0d3b
 	github.com/samber/lo v1.49.1
 	github.com/tidwall/gjson v1.18.0
 	github.com/tidwall/sjson v1.2.5
@@ -49,7 +50,6 @@ require (
 	github.com/jinzhu/copier v0.4.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/lqiz/expr v1.1.4 // indirect
-	github.com/magic-lib/go-plat-startupcfg v1.20250405.1 // indirect
 	github.com/marspere/goencrypt v1.0.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
