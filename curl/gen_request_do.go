@@ -66,7 +66,7 @@ func (g *genRequest) httpRequest(ctx context.Context, newUrl string, dataBuffer 
 			}
 		}
 
-		return respTemp, err
+		return respTemp, nil
 	}, opts...)
 
 	if retResp == nil {
