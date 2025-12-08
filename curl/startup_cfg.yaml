@@ -1,0 +1,9 @@
+api:
+  biuMoney:
+    domain: https://xxxxxxx
+    urls:
+      MobileCheckKYC: /kyc
+  member-server-grpc:
+    domain: http://xxxxx:10312
+    urls:
+      CompanyList: /member_service.MemberService/CompanyList

@@ -31,3 +31,5 @@ go.work
 .vscode
 .fleet
 curl/.DS_Store
+*.yaml
+*_test.go
