@@ -9,9 +9,11 @@ require (
 	github.com/magic-lib/go-plat-cache v1.20250722.3-0.20251206132909-738f1415c8d5
 	github.com/magic-lib/go-plat-startupcfg v1.20250529.2-0.20251205031104-d9cb3aa8853e
 	github.com/magic-lib/go-plat-utils v1.20251105.2-0.20251205024507-7aae01534474
+	github.com/orcaman/concurrent-map/v2 v2.0.1
 	github.com/samber/lo v1.49.1
 	github.com/tidwall/gjson v1.18.0
 	github.com/tidwall/sjson v1.2.5
+	google.golang.org/grpc v1.71.1
 )
 
 require (
@@ -58,7 +60,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect
-	github.com/orcaman/concurrent-map/v2 v2.0.1 // indirect
 	github.com/panjf2000/ants/v2 v2.11.2 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
@@ -84,6 +85,7 @@ require (
 	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb // indirect
 	google.golang.org/protobuf v1.36.5 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
