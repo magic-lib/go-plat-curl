@@ -227,6 +227,7 @@ func (l *grpcProxy) submit(connCtx context.Context, conn *grpc.ClientConn, metho
 	if conn == nil {
 		return fmt.Errorf("conn is nil")
 	}
+	//cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, callOpts...)
 	err := conn.Invoke(connCtx, methodName, req, resp)
 	if err != nil {
 		return err
