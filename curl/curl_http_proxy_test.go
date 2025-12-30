@@ -104,7 +104,7 @@ type MemberMysqlProxy struct {
 }
 
 func NewMemberMysqlProxy(serviceConfig *startupcfg.ConfigAPI, serviceName string, mysqlDsn string) (*MemberMysqlProxy, error) {
-	curlProxy, err := curl.NewCurlProxy(&curl.ProxyConfig{
+	curlProxy, err := curl.NewHttpProxy(&curl.ProxyConfig{
 		ServiceConfig: serviceConfig,
 		ServiceName:   serviceName,
 	})

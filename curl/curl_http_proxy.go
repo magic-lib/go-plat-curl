@@ -19,11 +19,11 @@ type ProxyData struct {
 	BuildReqHandler func(rb RequestBuilder) RequestBuilder //构建请求的函数，特殊处理，一般用不上
 }
 
-type curlProxy struct {
+type httpProxy struct {
 	serverApi startupcfg.ServiceAPI
 }
 
-func NewCurlProxy(cfg *ProxyConfig) (Proxy, error) {
+func NewHttpProxy(cfg *ProxyConfig) (Proxy, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("cfg is nil")
 	}
@@ -38,16 +38,16 @@ func NewCurlProxy(cfg *ProxyConfig) (Proxy, error) {
 	if dataApi == nil {
 		return nil, fmt.Errorf("%s not set", cfg.ServiceName)
 	}
-	return &curlProxy{
+	return &httpProxy{
 		serverApi: dataApi,
 	}, nil
 }
 
-func (l *curlProxy) ServerApi() startupcfg.ServiceAPI {
+func (l *httpProxy) ServerApi() startupcfg.ServiceAPI {
 	return l.serverApi
 }
 
-func (l *curlProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint any) (*Response, error) {
+func (l *httpProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint any) (*Response, error) {
 	if proxyData == nil {
 		return nil, fmt.Errorf("proxyData is nil")
 	}
