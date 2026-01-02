@@ -18,6 +18,7 @@ type Proxy interface {
 
 var (
 	defaultCacheTime = time.Hour
+	globalCommCache  cache.CommCache[string] //避免每次都新建一个缓存
 )
 
 type ProxyConfig struct {
@@ -64,7 +65,11 @@ func buildCurlProxyCache(proxyData *ProxyData) *ProxyData {
 			proxyData.CacheConfig.CacheTime = defaultCacheTime
 		}
 		if proxyData.CacheConfig.CachePool == nil {
-			proxyData.CacheConfig.CachePool = cache.NewMemGoCache[string](defaultCacheTime, defaultCacheTime)
+			//设置公共内存缓存
+			if globalCommCache == nil {
+				globalCommCache = cache.NewMemGoCache[string](defaultCacheTime, defaultCacheTime)
+			}
+			proxyData.CacheConfig.CachePool = globalCommCache
 		}
 		if proxyData.CacheConfig.Namespace == "" {
 			// 默认使用url+method作为namespace，可能存在相同的情况，最好自定义
