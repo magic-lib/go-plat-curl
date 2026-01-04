@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/magic-lib/go-plat-cache/cache"
 	"github.com/magic-lib/go-plat-utils/conv"
+	"github.com/magic-lib/go-servicekit/tracer"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
@@ -32,6 +33,10 @@ func getGrpcConnPool(domain string, resPoolCfg *cache.ResPoolConfig[*grpc.Client
 	}
 	if len(opt) == 0 {
 		opt = make([]grpc.DialOption, 0)
+	}
+	if _, ok := tracer.TraceProvider(); ok {
+		_, clientOpt := tracer.GetTraceConfig().GrpcMiddleware()
+		opt = append(opt, clientOpt)
 	}
 
 	if resPoolCfg == nil {

@@ -58,7 +58,7 @@ func (l *grpcProxy) getConn() (*grpc.ClientConn, error) {
 	if err != nil {
 		return nil, err
 	}
-	return oneConn.Resource, nil
+	return oneConn.Get(), nil
 }
 
 func (l *grpcProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint any) (*Response, error) {
@@ -206,7 +206,7 @@ func (l *grpcProxy) getGrpcRequest(curlReq *Request) (conn *grpc.ClientConn, met
 				err = poolErr
 				return
 			}
-			conn = connRes.Resource
+			conn = connRes.Get()
 		}
 		req = curlReq.Data
 	}

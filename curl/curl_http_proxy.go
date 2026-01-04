@@ -6,6 +6,7 @@ import (
 	"github.com/magic-lib/go-plat-cache/cache"
 	"github.com/magic-lib/go-plat-startupcfg/startupcfg"
 	"github.com/magic-lib/go-plat-utils/conv"
+	"github.com/magic-lib/go-servicekit/tracer"
 	"net/http"
 	"time"
 )
@@ -63,6 +64,16 @@ func (l *httpProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint a
 	if proxyData.Timeout > 0 {
 		rb = rb.SetTimeout(proxyData.Timeout)
 	}
+	useTrace := false
+	if _, ok := tracer.TraceProvider(); ok {
+		newHeader := make(http.Header)
+		ret := tracer.SpanToHeader(ctx, newHeader, "", "")
+		if ret {
+			rb = rb.SetHeader(newHeader)
+			useTrace = true
+		}
+	}
+
 	if proxyData.BuildReqHandler != nil {
 		rb = proxyData.BuildReqHandler(rb)
 	}
@@ -88,9 +99,30 @@ func (l *httpProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint a
 		}
 	}
 
+	startTime := time.Now()
+
 	resp := rb.Submit(ctx)
 
+	traceFunc := func(resp *Response, outErr error) {
+		if !useTrace {
+			return
+		}
+
+		costTime := time.Since(startTime)
+		_, span := tracer.GetTraceConfig().StartSpan(ctx, fmt.Sprintf("%s %s", proxyData.CurlReq.Method, proxyData.CurlReq.Url))
+		tracer.SetTags(span, map[string]any{
+			"cost":     costTime.Milliseconds(),
+			"request":  resp.Request,
+			"response": resp.Response,
+		})
+		if outErr != nil {
+			tracer.SetErrorTag(span, outErr)
+		}
+		span.End()
+	}
+
 	useExpireDataFunc := func(resp *Response, outErr error) (*Response, error) {
+		traceFunc(resp, outErr)
 		if proxyData.CacheConfig == nil {
 			return resp, outErr
 		}
