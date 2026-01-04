@@ -7,6 +7,7 @@ import (
 	"github.com/magic-lib/go-plat-cache/cache"
 	"github.com/magic-lib/go-plat-startupcfg/startupcfg"
 	"github.com/magic-lib/go-plat-utils/conv"
+	"github.com/magic-lib/go-plat-utils/logs"
 	"google.golang.org/grpc"
 	"net/http"
 	"net/url"
@@ -53,12 +54,14 @@ func (l *grpcProxy) ServerApi() startupcfg.ServiceAPI {
 	return l.serverApi
 }
 
+func (l *grpcProxy) SetLogger(_ logs.ILogger) {
+}
 func (l *grpcProxy) getConn() (*grpc.ClientConn, error) {
 	oneConn, err := l.connPool.Get()
 	if err != nil {
 		return nil, err
 	}
-	return oneConn.Resource, nil
+	return oneConn.Get(), nil
 }
 
 func (l *grpcProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint any) (*Response, error) {
@@ -206,7 +209,7 @@ func (l *grpcProxy) getGrpcRequest(curlReq *Request) (conn *grpc.ClientConn, met
 				err = poolErr
 				return
 			}
-			conn = connRes.Resource
+			conn = connRes.Get()
 		}
 		req = curlReq.Data
 	}

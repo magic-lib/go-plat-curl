@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/magic-lib/go-plat-cache/cache"
 	"github.com/magic-lib/go-plat-startupcfg/startupcfg"
+	"github.com/magic-lib/go-plat-utils/logs"
 	"google.golang.org/grpc"
 	"net/http"
 	"time"
@@ -12,7 +13,8 @@ import (
 
 // Proxy 利用config，封装了curl的提交方法
 type Proxy interface {
-	ServerApi() startupcfg.ServiceAPI                                                  //获取服务api配置
+	ServerApi() startupcfg.ServiceAPI //获取服务api配置
+	SetLogger(logger logs.ILogger)
 	Submit(ctx context.Context, proxyData *ProxyData, dstPoint any) (*Response, error) //提交数据
 }
 
@@ -22,6 +24,7 @@ var (
 )
 
 type ProxyConfig struct {
+	logger        logs.ILogger
 	ServiceConfig *startupcfg.ConfigAPI
 	ServiceName   string //config文件中服务名称，用于区分不同的服务
 }
