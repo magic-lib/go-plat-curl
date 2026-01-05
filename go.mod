@@ -9,11 +9,12 @@ require (
 	github.com/magic-lib/go-plat-cache v1.20250722.3-0.20251226065408-f0050a20b7f9
 	github.com/magic-lib/go-plat-startupcfg v1.20250529.2-0.20251230033104-d390e20239bd
 	github.com/magic-lib/go-plat-utils v1.20251105.2-0.20251230091020-8f5063fcbd1f
-	github.com/magic-lib/go-servicekit/tracer v0.0.0-20260104093919-46f88b0c8471
+	github.com/magic-lib/go-servicekit/tracer v0.0.0-20260105030755-a286e86bf44f
 	github.com/orcaman/concurrent-map/v2 v2.0.1
 	github.com/samber/lo v1.52.0
 	github.com/tidwall/gjson v1.18.0
 	github.com/tidwall/sjson v1.2.5
+	go.opentelemetry.io/otel/trace v1.39.0
 	google.golang.org/grpc v1.77.0
 )
 
@@ -142,7 +143,6 @@ require (
 	go.opentelemetry.io/otel/exporters/zipkin v1.24.0 // indirect
 	go.opentelemetry.io/otel/metric v1.39.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.39.0 // indirect
-	go.opentelemetry.io/otel/trace v1.39.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.3.1 // indirect
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	golang.org/x/arch v0.23.0 // indirect

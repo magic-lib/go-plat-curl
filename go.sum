@@ -223,8 +223,8 @@ github.com/magic-lib/go-plat-startupcfg v1.20250529.2-0.20251230033104-d390e2023
 github.com/magic-lib/go-plat-startupcfg v1.20250529.2-0.20251230033104-d390e20239bd/go.mod h1:xooVMBrIuyOCev/7c1EiqDLqOui6671rl79hcDM/ozM=
 github.com/magic-lib/go-plat-utils v1.20251105.2-0.20251230091020-8f5063fcbd1f h1:mtbhuq30IA3aGZ45NCAfRlfeAyctUoe+mjVp99W7STQ=
 github.com/magic-lib/go-plat-utils v1.20251105.2-0.20251230091020-8f5063fcbd1f/go.mod h1:wTqRda1XK5306FJwr5awGtsLZQ5/TadbZ7DBaUG8yUo=
-github.com/magic-lib/go-servicekit/tracer v0.0.0-20260104093919-46f88b0c8471 h1:cWKw4FDL57YX7pjWg56XfqKrZBc0WZxNXmSCyTPVnJM=
-github.com/magic-lib/go-servicekit/tracer v0.0.0-20260104093919-46f88b0c8471/go.mod h1:JSGpc+7050LXrS5FUrCzPwOLg+QUCW2vl4s7DcOG3AM=
+github.com/magic-lib/go-servicekit/tracer v0.0.0-20260105030755-a286e86bf44f h1:fjHEngQyV55wZNYtx9BuH3EWkLkPW/dMFix9ztIkpoU=
+github.com/magic-lib/go-servicekit/tracer v0.0.0-20260105030755-a286e86bf44f/go.mod h1:JSGpc+7050LXrS5FUrCzPwOLg+QUCW2vl4s7DcOG3AM=
 github.com/marspere/goencrypt v1.0.7 h1:Rlvsc9b7Yeaeda+gsGeCjREVZ/KL7szelRq4+haK5mw=
 github.com/marspere/goencrypt v1.0.7/go.mod h1:S5g6Wsd5jcOO01sp9QxNMYCldx9kecoDkK7BWaHA0vo=
 github.com/mattn/go-colorable v0.1.14 h1:9A9LHSqF/7dyVVX6g0U9cwm9pG3kP9gSzcuIPHPsaIE=

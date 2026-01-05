@@ -7,6 +7,7 @@ import (
 	"github.com/magic-lib/go-plat-startupcfg/startupcfg"
 	"github.com/magic-lib/go-plat-utils/conv"
 	"github.com/magic-lib/go-servicekit/tracer"
+	"go.opentelemetry.io/otel/trace"
 	"net/http"
 	"time"
 )
@@ -58,6 +59,8 @@ func (l *httpProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint a
 	proxyData = buildCurlProxyCache(proxyData)
 
 	var rb RequestBuilder = NewClient().NewRequest(proxyData.CurlReq)
+
+	spanName := fmt.Sprintf("%s %s", proxyData.CurlReq.Method, proxyData.CurlReq.Url)
 	if proxyData.RetryConfig != nil {
 		rb = rb.SetRetryPolicy(proxyData.RetryConfig)
 	}
@@ -67,11 +70,12 @@ func (l *httpProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint a
 	useTrace := false
 	if _, ok := tracer.TraceProvider(); ok {
 		newHeader := make(http.Header)
-		ret := tracer.SpanToHeader(ctx, newHeader, "", "")
-		if ret {
-			rb = rb.SetHeader(newHeader)
-			useTrace = true
-		}
+		ctx, _ = tracer.SpanToHeader(ctx, newHeader, func(ctx context.Context) (context.Context, trace.Span) {
+			newCtx, traceTemp := tracer.TracerFromContext(ctx, "github.com/magic-lib/go-plat-utils/curl")
+			return traceTemp.Start(newCtx, spanName)
+		})
+		rb = rb.SetHeader(newHeader)
+		useTrace = true
 	}
 
 	if proxyData.BuildReqHandler != nil {
@@ -103,13 +107,15 @@ func (l *httpProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint a
 
 	resp := rb.Submit(ctx)
 
-	traceFunc := func(resp *Response, outErr error) {
+	traceFunc := func(ctx context.Context, resp *Response, outErr error) {
 		if !useTrace {
 			return
 		}
 
 		costTime := time.Since(startTime)
-		_, span := tracer.GetTraceConfig().StartSpan(ctx, fmt.Sprintf("%s %s", proxyData.CurlReq.Method, proxyData.CurlReq.Url))
+		tc := tracer.GetTraceConfig()
+		// trace.noopSpan
+		_, span := tc.StartSpan(ctx, fmt.Sprintf("%s %s", resp.Request.Method, resp.Request.Url))
 		tracer.SetTags(span, map[string]any{
 			"cost":     costTime.Milliseconds(),
 			"request":  resp.Request,
@@ -121,8 +127,8 @@ func (l *httpProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint a
 		span.End()
 	}
 
-	useExpireDataFunc := func(resp *Response, outErr error) (*Response, error) {
-		traceFunc(resp, outErr)
+	useExpireDataFunc := func(ctx context.Context, resp *Response, outErr error) (*Response, error) {
+		traceFunc(ctx, resp, outErr)
 		if proxyData.CacheConfig == nil {
 			return resp, outErr
 		}
@@ -141,13 +147,14 @@ func (l *httpProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint a
 	}
 
 	if resp.Error != nil {
-		return useExpireDataFunc(resp, resp.Error)
+		return useExpireDataFunc(ctx, resp, resp.Error)
 	}
 	if resp.StatusCode != http.StatusOK {
-		return useExpireDataFunc(resp, fmt.Errorf("%d:%s", resp.StatusCode, http.StatusText(resp.StatusCode)))
+		return useExpireDataFunc(ctx, resp, fmt.Errorf("%d:%s", resp.StatusCode, http.StatusText(resp.StatusCode)))
 	}
 
-	var cacheFunction = func() {
+	var cacheFunction = func(cxt context.Context) {
+		traceFunc(ctx, resp, nil)
 		if useCache {
 			// 如果满足缓存条件，则缓存数据
 			if proxyData.CacheConfig.CacheCheckFunc(resp) {
@@ -165,7 +172,7 @@ func (l *httpProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint a
 			return resp, err
 		}
 	}
-	cacheFunction()
+	cacheFunction(ctx)
 
 	return resp, nil
 }
