@@ -21,7 +21,7 @@ var (
 	defaultPrintLogDataLength = 200 //默认打印日志的时候，数据最长，避免显示太多了
 
 	defaultMethod        = http.MethodPost
-	defaultTimeoutSecond = 30 * time.Second
+	defaultTimeoutSecond = 60 * time.Second
 	defaultMaxCacheTime  = 3600 * 24 * 2 * time.Second //最大用来存2天
 
 	headerContentType                  = "Content-Type"

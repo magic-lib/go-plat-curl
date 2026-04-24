@@ -12,7 +12,6 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"reflect"
 	"strings"
-	"time"
 )
 
 var (
@@ -73,7 +72,7 @@ func getGrpcConnPool(domain string, resPoolCfg *cache.ResPoolConfig[*grpc.Client
 		resPoolCfg.MaxSize = 10
 	}
 	if resPoolCfg.MaxUsage == 0 {
-		resPoolCfg.MaxUsage = 30 * time.Second
+		resPoolCfg.MaxUsage = defaultTimeoutSecond
 	}
 
 	rpcConnPool := cache.NewResPool(resPoolCfg)

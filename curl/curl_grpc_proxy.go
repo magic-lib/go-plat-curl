@@ -69,7 +69,7 @@ func (l *grpcProxy) Submit(ctx context.Context, proxyData *ProxyData, dstPoint a
 		return nil, fmt.Errorf("grpcData is nil")
 	}
 	if proxyData.Timeout <= 0 {
-		proxyData.Timeout = 30 * time.Second
+		proxyData.Timeout = defaultTimeoutSecond
 	}
 
 	proxyData = buildCurlReq(l.serverApi, proxyData)
