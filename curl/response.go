@@ -16,7 +16,7 @@ type Response struct {
 	Response   string        `json:"response"`
 	Header     http.Header   `json:"header"`
 	StatusCode int           `json:"status"`
-	CostTime   time.Duration `json:"costTime"` //请求间隔时间
+	CostTime   time.Duration `json:"cost_time"` //请求间隔时间
 	Error      error         `json:"error"`
 	fromCache  bool
 	resp       *http.Response
