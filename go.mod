@@ -8,7 +8,7 @@ require (
 	github.com/json-iterator/go v1.1.12
 	github.com/magic-lib/go-plat-cache v1.20260210.2-0.20260528093104-d322ca9cbeb2
 	github.com/magic-lib/go-plat-startupcfg v1.20260210.2-0.20260310082347-edba5f046593
-	github.com/magic-lib/go-plat-utils v1.20260210.2-0.20260604140352-69c83594df46
+	github.com/magic-lib/go-plat-utils v1.20260210.2-0.20260615113753-f7d11813f60c
 	github.com/orcaman/concurrent-map/v2 v2.0.1
 	github.com/samber/lo v1.52.0
 	github.com/tidwall/gjson v1.18.0
