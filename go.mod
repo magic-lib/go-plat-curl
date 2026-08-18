@@ -6,9 +6,9 @@ require (
 	github.com/ChengjinWu/gojson v0.0.0-20181113073026-04749cc2d015
 	github.com/avast/retry-go/v4 v4.6.0
 	github.com/json-iterator/go v1.1.12
-	github.com/magic-lib/go-plat-cache v1.20260210.2-0.20260528093104-d322ca9cbeb2
-	github.com/magic-lib/go-plat-startupcfg v1.20260210.2-0.20260310082347-edba5f046593
-	github.com/magic-lib/go-plat-utils v1.20260210.2-0.20260615113753-f7d11813f60c
+	github.com/magic-lib/go-plat-cache v1.20260210.2-0.20260818104614-73be8b63d66b
+	github.com/magic-lib/go-plat-startupcfg v1.20260210.2-0.20260818104539-4975fbfc160c
+	github.com/magic-lib/go-plat-utils v1.20260210.2-0.20260818103136-e724e747dd96
 	github.com/orcaman/concurrent-map/v2 v2.0.1
 	github.com/samber/lo v1.52.0
 	github.com/tidwall/gjson v1.18.0
@@ -110,6 +110,7 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/zeromicro/go-zero v1.9.4 // indirect
+	go.etcd.io/bbolt v1.4.0 // indirect
 	go.mongodb.org/mongo-driver/v2 v2.5.1-0.20260209094634-d010e7850e68 // indirect
 	go.opentelemetry.io/otel v1.41.0 // indirect
 	go.opentelemetry.io/otel/trace v1.41.0 // indirect
